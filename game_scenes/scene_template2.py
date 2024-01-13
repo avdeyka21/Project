@@ -7,7 +7,8 @@ from easy_dev.tools import PyGameTools
 class Temp2(Scene):
     def __init__(self):
         self.font = PyGameTools.FontMod(self, 50)
-        self.evs = PyGameTools.Events(self)
+        self.evs = PyGameTools.Events(self)  # готовые инструменты реагирования на события pygame - нажатие конкретной
+        # клавиши на клавиатуре или кнопки мыши
 
     def update(self):
         self.font.print_on_scene('Сцена N2\n'
@@ -16,4 +17,4 @@ class Temp2(Scene):
         self.font.print_on_scene('FontMod test\n'
                                  'PyGameTools', 'white', (790, 590), 'right', 'bottom')
         if self.evs.key_down(pygame.K_b) or self.evs.mouse_button_down(pygame.BUTTON_LEFT):
-            self.scene_manager.switch_scene('temp1')
+            self.scene_manager.switch_scene('temp1')  # в PyGameTools.events передаём pygame.<клавиша или кнопка мыши>
