@@ -3,7 +3,7 @@ from easy_dev.scene import Scene
 
 
 class PyGameTools:
-    class Text(pygame.font.Font):
+    class FontMod(pygame.font.Font):
         def __init__(self, scene: Scene, size=40):
             super().__init__(None, size)
             self.scene = scene

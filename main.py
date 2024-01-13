@@ -11,8 +11,8 @@ if __name__ == '__main__':
         'menu': Menu,
         'game': Game
     })
-    scene_manager.reopen_scene('game')
-    scene_manager.reopen_scene('menu')
+    scene_manager.reload_scene('game')
+    scene_manager.reload_scene('menu')
     scene_manager.switch_scene('menu')
     while True:
         scene_manager.tick()

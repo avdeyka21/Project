@@ -5,6 +5,7 @@ class Scene:
     scene_manager: SceneManager
 
     def update(self):
+        '''Вызывается, когда у менеджера сцен вызван метод tick'''
         pass
 
     def just_switched(self):
