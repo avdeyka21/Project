@@ -20,6 +20,8 @@ class SceneManager:
         self.__opened_scenes[scene_name].just_opened()
 
     def open_scene(self, scene_name: str, **kwargs_for_scene):
+        if not self.__opened_scenes:
+            self.current_scene_name = scene_name
         '''Открывает сцену'''
         if scene_name not in self.__opened_scenes:
             self.reload_scene(scene_name, **kwargs_for_scene)
