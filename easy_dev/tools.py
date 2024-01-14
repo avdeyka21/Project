@@ -51,7 +51,7 @@ class PyGameTools:
         def __init__(self, scene: Scene, rect):
             self.scene = scene
             self.events = PyGameTools.Events(self.scene)
-            self.rect = rect
+            self.rect = pygame.rect.Rect(rect)
 
         def is_clicked(self):
             """Возвращает True если кнопка была нажата левой кнопкой мыши иначе False"""
@@ -63,7 +63,6 @@ class PyGameTools:
         def is_cursor_on(self):
             """Возвращает True если курсор мыши внутри кнопки, иначе False"""
             cords = pygame.mouse.get_pos()
-            if self.rect[0] <= cords[0] < (self.rect[0] + self.rect[2]) and self.rect[1] <= cords[1] < (
-                    self.rect[1] + self.rect[3]):
+            if pygame.mouse.get_focused() and self.rect.collidepoint(*pygame.mouse.get_pos()):
                 return True
             return False
