@@ -3,7 +3,7 @@ import pygame
 
 class SceneManager:
     def __init__(self, surface: pygame.surface.Surface, all_scenes: dict):
-        self.public_dict = dict()
+        self.public_dict = dict()  # Публичный словарь для передачи информации между сценами
         self.surface = surface
         self.__scene_classes = all_scenes
         self.__opened_scenes = dict()
