@@ -62,7 +62,6 @@ class PyGameTools:
 
         def is_cursor_on(self):
             """Возвращает True если курсор мыши внутри кнопки, иначе False"""
-            cords = pygame.mouse.get_pos()
             if pygame.mouse.get_focused() and self.rect.collidepoint(*pygame.mouse.get_pos()):
                 return True
             return False

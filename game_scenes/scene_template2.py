@@ -15,6 +15,8 @@ class Temp2(Scene):
                                  'Чтобы открыть сцену 1, нажмите клавишу B\n'
                                  'или левую кнопку мыши', 'white', (20, 20))
         self.font.print_on_scene('FontMod test\n'
-                                 'PyGameTools', 'white', (790, 590), 'right', 'bottom')
+                                 'PyGameTools', 'white', (780, 580), 'right', 'bottom')
+        self.font.print_on_scene('Этот текст\n'
+                                 'в центре окна', 'white', (400, 300), 'center', 'center')
         if self.evs.key_down(pygame.K_b) or self.evs.mouse_button_down(pygame.BUTTON_LEFT):
             self.scene_manager.switch_scene('temp1')  # в PyGameTools.events передаём pygame.<клавиша или кнопка мыши>

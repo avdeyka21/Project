@@ -23,7 +23,6 @@ class SceneManager:
         """Открывает сцену"""
         if not self.__opened_scenes:
             self.current_scene_name = scene_name
-
         if scene_name not in self.__opened_scenes:
             self.reload_scene(scene_name, **kwargs_for_scene)
 
