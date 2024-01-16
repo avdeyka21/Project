@@ -38,10 +38,23 @@ class PyGameTools:
                     return True
             return False
 
+        def key_up(self, pygame_key):
+            """Возвращает True если клавиша pygame_key была нажата, иначе False"""
+            for e in self.scene.scene_manager.events:
+                if e.type == pygame.KEYUP and e.key == pygame_key:
+                    return True
+            return False
+
         def mouse_button_down(self, pygame_button):
             """Возвращает True если кнопка мыши pygame_button была нажата, иначе False"""
             for e in self.scene.scene_manager.events:
                 if e.type == pygame.MOUSEBUTTONDOWN and e.button == pygame_button:
+                    return True
+            return False
+
+        def mouse_button_up(self, pygame_button):
+            for e in self.scene.scene_manager.events:
+                if e.type == pygame.MOUSEBUTTONUP and e.button == pygame_button:
                     return True
             return False
 
@@ -65,3 +78,41 @@ class PyGameTools:
             if pygame.mouse.get_focused() and self.rect.collidepoint(*pygame.mouse.get_pos()):
                 return True
             return False
+
+    class VisibleButton:
+        def __init__(self, scene: Scene, rect, color, text=''):
+            self.dif = 2
+            self.surface = scene.scene_manager.surface
+            self.button = PyGameTools.Button(scene, rect)
+            self.rect = self.button.rect
+            c = pygame.color.Color(color)
+            self.def_color = [c.r, c.g, c.b]
+            self.locked = 0
+            self.colorize(self.def_color)
+            self.font = PyGameTools.FontMod(scene, 40)
+            self.text = text
+
+        def colorize(self, color):
+            self.color1 = color
+            self.color2 = [int(i * 0.9) for i in self.color1]
+            self.color3 = [int(i * 0.8) for i in self.color1]
+
+        def set_locked(self, lock: bool):
+            self.locked = lock
+            if lock:
+                self.colorize((128, 128, 128))
+            else:
+                self.colorize(self.def_color)
+
+        def render(self):
+            if not self.locked and self.button.is_cursor_on():
+                pygame.draw.rect(self.surface, self.color2, self.rect.move(-self.dif, self.dif))
+                pygame.draw.rect(self.surface, self.color3, self.rect.move(self.dif, -self.dif))
+            else:
+                pygame.draw.rect(self.surface, self.color2, self.rect.move(self.dif, -self.dif))
+                pygame.draw.rect(self.surface, self.color1, self.rect.move(-self.dif, self.dif))
+            if self.text:
+                self.font.print_on_scene(self.text, 'black', self.rect.center, 'center', 'center')
+
+        def is_clicked(self):
+            return not self.locked and self.button.is_clicked()
