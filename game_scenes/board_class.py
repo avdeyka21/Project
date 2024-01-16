@@ -62,33 +62,40 @@ class Board:
             return (int((mx - self.rect.left) / (self.rect.width / self.columns)),
                     int((my - self.rect.top) / (self.rect.height / self.rows)))
 
-    def check_ready(self):
+    def check_ready(self, mode=0):
         ships = []
         board = copy.deepcopy(self.board)
         for y in range(self.rows):
             for x in range(self.columns):
-                if board[y][x] == 1:
+                if board[y][x] in [1, 3]:
                     maxs = 1
                     old = (x, y)
-                    board[y][x] = 2
-                    if self.diag(board, x, y):
+                    board[y][x] = 0
+                    rot = 0
+                    if mode == 0 and self.diag(board, x, y):
                         return False
-                    while x + 1 < self.columns and board[y][x + 1] == 1:
+                    while x + 1 < self.columns and board[y][x + 1] in [1, 3]:
                         x += 1
-                        board[y][x] = 2
+                        board[y][x] = 0
                         maxs += 1
-                        if self.diag(board, x, y):
+                        if mode == 0 and self.diag(board, x, y):
                             return False
                     if maxs == 1:
                         x, y = old
-                        while y + 1 < self.rows and board[y + 1][x] == 1:
+                        rot = 1
+                        while y + 1 < self.rows and board[y + 1][x] in [1, 3]:
                             y += 1
-                            board[y][x] = 2
+                            board[y][x] = 0
                             maxs += 1
-                            if self.diag(board, x, y):
+                            if mode == 0 and self.diag(board, x, y):
                                 return False
-                    ships.append(maxs)
+                    if mode:
+                        ships.append([old, rot, maxs])
+                    else:
+                        ships.append(maxs)
                     x, y = old
+        if mode:
+            return ships
         if ships.count(1) == 4 and ships.count(2) == 3 and ships.count(3) == 2 and ships.count(4) == 1:
             return True
         return False
@@ -105,6 +112,44 @@ class Board:
             self.board[y][x] = 3
             if not any([any([j == 1 for j in i]) for i in self.board]):
                 self.scene.scene_manager.public_dict['winner'] = self.scene.scene_manager.public_dict['player']
+            self.mark_voids(self.check_ready(1))
             return 'hit'
         else:
             return 'error'
+
+    def mark_voids(self, ships):
+        for s in ships:
+            ship = []
+            x, y = s[0]
+            rot, maxs = s[1], s[2]
+            for i in range(maxs):
+                if rot:
+                    ship.append(self.board[y + i][x] == 3)
+                else:
+                    ship.append(self.board[y][x + i] == 3)
+            if all(ship):
+                for i in range(maxs):
+                    if rot:
+                        x2, y2 = x, y + i
+                    else:
+                        x2, y2 = x + i, y
+                    up = y2 - 1 >= 0
+                    down = y2 + 1 < self.rows
+                    left = x2 - 1 >= 0
+                    right = x2 + 1 < self.columns
+                    if up and self.board[y2 - 1][x2] == 0:
+                        self.board[y2 - 1][x2] = 2
+                    if down and self.board[y2 + 1][x2] == 0:
+                        self.board[y2 + 1][x2] = 2
+                    if left and self.board[y2][x2 - 1] == 0:
+                        self.board[y2][x2 - 1] = 2
+                    if right and self.board[y2][x2 + 1] == 0:
+                        self.board[y2][x2 + 1] = 2
+                    if left and up and self.board[y2 - 1][x2 - 1] == 0:
+                        self.board[y2 - 1][x2 - 1] = 2
+                    if up and right and self.board[y2 - 1][x2 + 1] == 0:
+                        self.board[y2 - 1][x2 + 1] = 2
+                    if right and down and self.board[y2 + 1][x2 + 1] == 0:
+                        self.board[y2 + 1][x2 + 1] = 2
+                    if down and left and self.board[y2 + 1][x2 - 1] == 0:
+                        self.board[y2 + 1][x2 - 1] = 2
