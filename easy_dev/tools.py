@@ -80,6 +80,7 @@ class PyGameTools:
             return False
 
     class VisibleButton:
+        """То же самое, что и Button, но видимое"""
         def __init__(self, scene: Scene, rect, color, text=''):
             self.dif = 2
             self.surface = scene.scene_manager.surface
