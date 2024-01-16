@@ -46,7 +46,7 @@ class ShipConfiger(Scene):
             if self.board.check_ready():
                 self.but_next.set_locked(False)
             else:
-                self.but_next.set_locked(True)
+                self.but_next.set_locked(True)  # for debug set False
         if self.lbutton:
             cords = self.board.global_to_local_cords(pygame.mouse.get_pos())
             if cords:

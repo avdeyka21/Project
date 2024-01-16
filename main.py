@@ -2,6 +2,7 @@ import pygame
 from easy_dev.sceneManager import SceneManager
 from game_scenes.gameplay_scene import Game
 from game_scenes.ship_configurating import ShipConfiger
+from game_scenes.player_switcher import Switcher
 import copy
 
 if __name__ == '__main__':
@@ -10,7 +11,8 @@ if __name__ == '__main__':
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     scene_manager = SceneManager(screen, {
         'game': Game,
-        'config': ShipConfiger
+        'config': ShipConfiger,
+        'switcher': Switcher
     })  # в менеджер сцен при инициализации передаются сцены и их имена в виду словаря
     scene_manager.public_dict['board1'] = [[0 for _ in range(10)] for _ in range(10)]
     scene_manager.public_dict['board2'] = copy.deepcopy(scene_manager.public_dict['board1'])
