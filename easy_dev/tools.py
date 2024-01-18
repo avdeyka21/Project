@@ -135,3 +135,27 @@ class PyGameTools:
                     self.set_color(self.con)
                     self.text = 'ON'
             super().render()
+
+    class PlusMinus:
+        def __init__(self, scene: Scene, rect, color):
+            r = rect
+            if r[2] >= r[3]:
+                r1 = pygame.Rect(r[0], r[1], r[2] / 2, r[3])
+                r2 = pygame.Rect(r[0] + r[2] / 2, r[1], r[2] / 2, r[3])
+            else:
+                r1 = pygame.Rect(r[0], r[1], r[2], r[3] / 2)
+                r2 = pygame.Rect(r[0], r[1] + r[3] / 2, r[2], r[3] / 2)
+            self.plus = PyGameTools.VisibleButton(scene, r1, color, '+')
+            self.minus = PyGameTools.VisibleButton(scene, r2, color, '-')
+
+        def render(self):
+            self.plus.render()
+            self.minus.render()
+
+        def get_res(self):
+            if self.plus.is_clicked():
+                return 1
+            elif self.minus.is_clicked():
+                return -1
+            else:
+                return 0
