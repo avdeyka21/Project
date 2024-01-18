@@ -81,29 +81,28 @@ class PyGameTools:
 
     class VisibleButton:
         """То же самое, что и Button, но видимое"""
+
         def __init__(self, scene: Scene, rect, color, text=''):
             self.dif = 2
             self.surface = scene.scene_manager.surface
             self.button = PyGameTools.Button(scene, rect)
             self.rect = self.button.rect
-            c = pygame.color.Color(color)
-            self.def_color = [c.r, c.g, c.b]
             self.locked = 0
-            self.colorize(self.def_color)
+            self.set_color(color)
             self.font = PyGameTools.FontMod(scene, 40)
             self.text = text
 
-        def colorize(self, color):
-            self.color1 = color
+        def set_color(self, color):
+            self.color1 = pygame.Color(color)
             self.color2 = [int(i * 0.9) for i in self.color1]
             self.color3 = [int(i * 0.8) for i in self.color1]
 
         def set_locked(self, lock: bool):
             self.locked = lock
             if lock:
-                self.colorize((128, 128, 128))
+                self.set_color((128, 128, 128))
             else:
-                self.colorize(self.def_color)
+                self.set_color(self.def_color)
 
         def render(self):
             if not self.locked and self.button.is_cursor_on():
@@ -117,3 +116,22 @@ class PyGameTools:
 
         def is_clicked(self):
             return not self.locked and self.button.is_clicked()
+
+    class Checkbox(VisibleButton):
+        def __init__(self, scene: Scene, rect, colorOFF, colorON):
+            super().__init__(scene, rect, colorOFF, 'OFF')
+            self.state = False
+            self.con = colorON
+            self.coff = colorOFF
+
+        def render(self):
+            if self.is_clicked() and not self.locked:
+                if self.state:
+                    self.state = False
+                    self.set_color(self.coff)
+                    self.text = 'OFF'
+                else:
+                    self.state = True
+                    self.set_color(self.con)
+                    self.text = 'ON'
+            super().render()
