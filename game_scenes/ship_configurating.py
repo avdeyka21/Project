@@ -19,11 +19,15 @@ class ShipConfiger(Scene):
         self.font = PyGameTools.FontMod(self, 40)
 
     def update(self):
+        ready = self.board.check_ready()
         self.scene_manager.surface.fill('#d3c199')
         self.board.render(True)
         self.but_next.render()
-        self.font.print_on_scene(f'Игрок {self.scene_manager.public_dict["p_conf"]}, разместите корабли', 'black',
+        self.font.print_on_scene(f'Игрок {self.scene_manager.public_dict["p_conf"]}, разместите корабли', 'white',
                                  (400, 5), 'center')
+        self.font.print_on_scene('Корабли:', 'white', (100, 100), 'center')
+        scount = self.scene_manager.public_dict.get('ships_count')
+        sconf = self.scene_manager.public_dict.get('ships_conf')
         if self.but_next.is_clicked():
             if self.scene_manager.public_dict['p_conf'] == 1:
                 self.scene_manager.public_dict['p_conf'] = 2
@@ -35,7 +39,8 @@ class ShipConfiger(Scene):
             self.lbutton = 1
         if self.evs.mouse_button_up(pygame.BUTTON_LEFT):
             self.lbutton = 0
-            if self.board.check_ready():
+            print(scount, sconf, scount == sconf, ready)
+            if ready and sconf == scount:
                 self.but_next.set_locked(False)
             else:
                 self.but_next.set_locked(True)
@@ -43,7 +48,7 @@ class ShipConfiger(Scene):
             self.rbutton = 1
         if self.evs.mouse_button_up(pygame.BUTTON_RIGHT):
             self.rbutton = 0
-            if self.board.check_ready():
+            if ready and sconf == scount:
                 self.but_next.set_locked(False)
             else:
                 self.but_next.set_locked(True)  # for debug set False
@@ -55,3 +60,6 @@ class ShipConfiger(Scene):
             cords = self.board.global_to_local_cords(pygame.mouse.get_pos())
             if cords:
                 self.board.erase(cords)
+        for i in range(5):
+            self.font.print_on_scene(f'{i + 1}П: {0 if not scount else scount[i]}/{sconf[i]}', 'white',
+                                     (100, 150 + i * 50), 'center')

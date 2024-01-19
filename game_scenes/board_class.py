@@ -94,14 +94,15 @@ class Board:
                     else:
                         ships.append(maxs)
                     x, y = old
+        self.scene.scene_manager.public_dict['ships_count'] = [ships.count(i + 1) for i in range(5)]
         if mode:
             return ships
-        if ships.count(1) == 4 and ships.count(2) == 3 and ships.count(3) == 2 and ships.count(4) == 1:
+        if self.scene.scene_manager.public_dict['ships_conf'] == self.scene.scene_manager.public_dict['ships_count']:
             return True
         return False
 
     def diag(self, board, x, y):
-        if y + 1 < self.rows:
+        if not self.scene.scene_manager.public_dict.get('diag') and y + 1 < self.rows:
             return (x - 1 >= 0 and board[y + 1][x - 1]) or (x + 1 < self.columns and board[y + 1][x + 1])
 
     def shoot(self, x, y):
@@ -118,6 +119,7 @@ class Board:
             return 'error'
 
     def mark_voids(self, ships):
+        diag = not self.scene.scene_manager.public_dict['diag']
         for s in ships:
             ship = []
             x, y = s[0]
@@ -145,11 +147,11 @@ class Board:
                         self.board[y2][x2 - 1] = 2
                     if right and self.board[y2][x2 + 1] == 0:
                         self.board[y2][x2 + 1] = 2
-                    if left and up and self.board[y2 - 1][x2 - 1] == 0:
+                    if diag and  left and up and self.board[y2 - 1][x2 - 1] == 0:
                         self.board[y2 - 1][x2 - 1] = 2
-                    if up and right and self.board[y2 - 1][x2 + 1] == 0:
+                    if diag and up and right and self.board[y2 - 1][x2 + 1] == 0:
                         self.board[y2 - 1][x2 + 1] = 2
-                    if right and down and self.board[y2 + 1][x2 + 1] == 0:
+                    if diag and right and down and self.board[y2 + 1][x2 + 1] == 0:
                         self.board[y2 + 1][x2 + 1] = 2
-                    if down and left and self.board[y2 + 1][x2 - 1] == 0:
+                    if diag and down and left and self.board[y2 + 1][x2 - 1] == 0:
                         self.board[y2 + 1][x2 - 1] = 2

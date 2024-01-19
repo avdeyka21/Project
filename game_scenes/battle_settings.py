@@ -20,13 +20,24 @@ class Battle_settings(Scene):
         self.boardsizechanger.render()
         self.diagcbox.render()
         self.butnext.render()
-        self.size = min([max([self.size + self.boardsizechanger.get_res(), 8]), 16])
+        self.size = min([max([self.size + self.boardsizechanger.get_res(), 10]), 16])
         self.font60.print_on_scene('Настройка боя', 'white', (5, 5))
         self.font50.print_on_scene(f'Размер поля: {self.size}', 'white', (500, 100), 'right', 'center')
         self.font50.print_on_scene('Размещение по диагонали', 'white', (500, 150), 'right', 'center')
         for i in range(5):
             self.ships[i][1].render()
-            self.ships[i][0] = min([max([self.ships[i][0] + self.ships[i][1].get_res(), 0]), 5])
+            self.ships[i][0] = min([max([self.ships[i][0] + self.ships[i][1].get_res(), 0]), 5 - i])
             self.font50.print_on_scene(f'{i + 1}-палубные корабли: {self.ships[i][0]}', 'white', (500, 245 + i * 50),
                                        'right', 'center')
         self.butnext.set_locked(not any([i[0] for i in self.ships]))
+        if self.butnext.is_clicked():
+            self.scene_manager.public_dict['board1'] = [[0 for _ in range(self.size)] for _ in range(self.size)]
+            self.scene_manager.public_dict['board2'] = [[0 for _ in range(self.size)] for _ in range(self.size)]
+            self.scene_manager.public_dict['p_conf'] = 1
+            self.scene_manager.public_dict['player'] = 1
+            self.scene_manager.public_dict['ships_conf'] = [i[0] for i in self.ships]
+            self.scene_manager.public_dict['diag'] = self.diagcbox.state
+            self.scene_manager.public_dict['size'] = self.size
+            self.scene_manager.public_dict['ships_count'] = [0 for i in range(5)]
+            self.scene_manager.reload_scene('config')
+            self.scene_manager.switch_scene('config')
