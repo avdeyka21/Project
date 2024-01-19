@@ -64,6 +64,9 @@ class Game(Scene):
             self.font40.print_on_scene(f'Игра завершена!\n'
                                        f'Игрок {self.scene_manager.public_dict["winner"]} побеждает.',
                                        'white', (400, 10), 'center')
+            if self.butnext.is_clicked():
+                pygame.quit()
+                exit()
         self.font40.print_on_scene(note1, 'white', self.boards[player].rect.move(0, 5).midbottom, 'center')
         self.font40.print_on_scene(note2, 'white', self.boards[not player].rect.move(0, 5).midbottom, 'center')
 

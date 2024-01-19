@@ -1,6 +1,7 @@
 import pygame
-from easy_dev.tools import PyGameTools
+
 from easy_dev.scene import Scene
+from easy_dev.tools import PyGameTools
 from game_scenes.board_class import Board
 
 
@@ -39,7 +40,6 @@ class ShipConfiger(Scene):
             self.lbutton = 1
         if self.evs.mouse_button_up(pygame.BUTTON_LEFT):
             self.lbutton = 0
-            print(scount, sconf, scount == sconf, ready)
             if ready and sconf == scount:
                 self.but_next.set_locked(False)
             else:
