@@ -91,6 +91,7 @@ class PyGameTools:
             self.set_color(color)
             self.font = PyGameTools.FontMod(scene, 40)
             self.text = text
+            self.def_color = pygame.Color(self.color1)
 
         def set_color(self, color):
             self.color1 = pygame.Color(color)
